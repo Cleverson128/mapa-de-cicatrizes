@@ -1,0 +1,839 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guia de Referência Emocional | Cléverson E. Costa</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary: #1a472a;
+            --secondary: #2d5a3f;
+            --accent: #c5a059;
+            --bg: #f4f4f0;
+            --text: #333;
+            --white: #ffffff;
+            --soft-bg: #f7f6f2;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Lato', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding: 20px;
+        }
+
+        .page {
+            background: var(--white);
+            max-width: 1100px;
+            margin: 30px auto;
+            padding: 50px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.15);
+            border-radius: 8px;
+        }
+
+        h1 {
+            font-family: 'Cinzel', serif;
+            color: var(--primary);
+            font-size: 2.5em;
+            margin-bottom: 15px;
+            text-align: center;
+            border-bottom: 2px solid var(--accent);
+            padding-bottom: 20px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--secondary);
+            font-size: 1.2em;
+            margin-bottom: 40px;
+            font-style: italic;
+        }
+
+        .intro-box {
+            background: #e6f7e9;
+            border-left: 4px solid var(--accent);
+            padding: 25px;
+            margin-bottom: 40px;
+            border-radius: 4px;
+        }
+
+        .intro-box strong {
+            color: var(--primary);
+        }
+
+        /* CICATRIZ CARD - LAYOUT 3 COLUNAS */
+        .cicatriz-card {
+            background: var(--soft-bg);
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 25px 20px 20px 20px;
+            margin: 30px 0;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            page-break-inside: avoid; /* Evita quebra no meio do card ao imprimir */
+        }
+
+        .cicatriz-number {
+            position: absolute;
+            top: -15px;
+            left: 20px;
+            background: var(--primary);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .cicatriz-title {
+            font-family: 'Cinzel', serif;
+            color: var(--secondary);
+            font-size: 1.5em;
+            margin: 10px 0 20px 0;
+            font-weight: 700;
+            text-align: center;
+        }
+
+        /* GRID DE 3 COLUNAS */
+        .cicatriz-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 25px;
+        }
+
+        .column {
+            min-width: 0; /* Previne overflow */
+        }
+
+        .section-label {
+            color: var(--primary);
+            font-weight: bold;
+            font-size: 1.05em;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            font-family: 'Cinzel', serif;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 4px;
+            height: 18px;
+            background: var(--accent);
+            margin-right: 8px;
+            border-radius: 2px;
+            flex-shrink: 0;
+        }
+
+        .section-content ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .section-content li {
+            padding: 6px 0 6px 25px;
+            position: relative;
+            color: var(--text);
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .section-content li::before {
+            position: absolute;
+            left: 5px;
+            font-size: 1em;
+        }
+
+        .eventos li::before { content: "📌"; }
+        .sentimentos li::before { content: "💔"; }
+        .crencas li::before { content: "💭"; }
+
+        /* Alert Boxes */
+        .alert-box {
+            background: #fff8e1;
+            border-left: 4px solid var(--accent);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .alert-box strong {
+            color: #e65100;
+            font-size: 1.1em;
+        }
+
+        .tips-box {
+            background: #e8f5e9;
+            border-left: 4px solid var(--secondary);
+            padding: 20px;
+            margin: 30px 0;
+            border-radius: 4px;
+        }
+
+        .tips-box h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-family: 'Cinzel', serif;
+        }
+
+        .tips-box ol {
+            padding-left: 25px;
+        }
+
+        .tips-box li {
+            margin: 10px 0;
+            color: var(--text);
+        }
+
+        .page-number {
+            text-align: center;
+            color: #999;
+            margin-top: 50px;
+            padding-top: 20px;
+            border-top: 1px solid #ddd;
+            font-size: 0.9em;
+        }
+
+        /* RESPONSIVO - Em mobile, volta para 1 coluna */
+        @media (max-width: 968px) {
+            .page {
+                padding: 30px 20px;
+                margin: 15px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .cicatriz-content {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .cicatriz-title {
+                font-size: 1.3em;
+            }
+        }
+
+        /* Para impressão - garante boa formatação */
+        @media print {
+            body { background: white; }
+            .page { 
+                box-shadow: none; 
+                padding: 30px;
+                max-width: 100%;
+            }
+            .cicatriz-card {
+                page-break-inside: avoid;
+                margin: 20px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<!-- PÁGINA 1: INTRO -->
+<div class="page">
+    <h1>🔍 GUIA DE REFERÊNCIA EMOCIONAL</h1>
+    <p class="subtitle">Use este guia para identificar suas cicatrizes, nomear seus sentimentos e reconhecer crenças limitantes</p>
+
+    <div class="intro-box">
+        <p><strong>💡 COMO USAR ESTE GUIA:</strong></p>
+        <p>1. Leia as 12 categorias de cicatrizes abaixo</p>
+        <p>2. Identifique quais ressoam com sua história</p>
+        <p>3. Use os <strong>sentimentos listados</strong> para nomear o que você sentiu</p>
+        <p>4. Use as <strong>crenças listadas</strong> como ponto de partida (ajuste para sua realidade)</p>
+        <p>5. Adapte para sua realidade única - estes são exemplos, não fórmulas (Não se limite)</p>
+    </div>
+
+    <!-- CICATRIZ 1 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #1</div>
+        <h2 class="cicatriz-title">Abandono / Ausência Parental</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Pai ou mãe abandona a família</li>
+                        <li>Pais separados (criança fica com um só)</li>
+                        <li>Morte de um dos pais</li>
+                        <li>Pais emocionalmente ausentes</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Solidão profunda</li>
+                        <li>Medo de ser descartado</li>
+                        <li>Raiva reprimida</li>
+                        <li>Vazio interior</li>
+                        <li>Sensação de não ter valor</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Eu não sou suficiente para ser amado"</li>
+                        <li>"As pessoas sempre me abandonam"</li>
+                        <li>"Amor é condicional"</li>
+                        <li>"Eu preciso me virar sozinho"</li>
+                        <li>"Não posso confiar em ninguém"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 2 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #2</div>
+        <h2 class="cicatriz-title">Pobreza / Fome / Privação</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Passar fome na infância</li>
+                        <li>Ver a mãe/pai chorando por falta de dinheiro</li>
+                        <li>Não ter roupas/materiais como outras crianças</li>
+                        <li>Ser humilhado pela condição financeira</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Vergonha</li>
+                        <li>Inferioridade</li>
+                        <li>Raiva do mundo</li>
+                        <li>Medo de faltar</li>
+                        <li>Impotência</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Eu nunca vou ter o suficiente"</li>
+                        <li>"Dinheiro = valor/segurança"</li>
+                        <li>"Se eu parar de lutar, eu morro"</li>
+                        <li>"O mundo é escasso e cruel"</li>
+                        <li>"Preciso acumular para me proteger"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 3 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #3</div>
+        <h2 class="cicatriz-title">Abuso Físico / Emocional</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Apanhar regularmente</li>
+                        <li>Ser humilhado verbalmente</li>
+                        <li>Viver em ambiente de violência</li>
+                        <li>Presenciar violência doméstica</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Medo constante</li>
+                        <li>Raiva reprimida</li>
+                        <li>Vergonha do próprio corpo/existência</li>
+                        <li>Impotência</li>
+                        <li>Hipervigilância</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Eu mereço ser punido"</li>
+                        <li>"O mundo é perigoso"</li>
+                        <li>"Eu não posso errar"</li>
+                        <li>"Expressar emoções é perigoso"</li>
+                        <li>"Amor = dor"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PÁGINA 2 -->
+<div class="page">
+    
+    <!-- CICATRIZ 4 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #4</div>
+        <h2 class="cicatriz-title">Rejeição / Bullying</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Bullying na escola</li>
+                        <li>Ser excluído de grupos</li>
+                        <li>Ser ridicularizado publicamente</li>
+                        <li>Não ser escolhido (times, festas, relacionamentos)</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Vergonha profunda</li>
+                        <li>Inadequação</li>
+                        <li>Raiva de si mesmo</li>
+                        <li>Solidão</li>
+                        <li>Necessidade de aprovação</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Tem algo de errado comigo"</li>
+                        <li>"Eu preciso me esconder para ser aceito"</li>
+                        <li>"Eu nunca vou pertencer"</li>
+                        <li>"Preciso ser perfeito para ser amado"</li>
+                        <li>"É melhor estar sozinho que ser rejeitado"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 5 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #5</div>
+        <h2 class="cicatriz-title">Traição / Infidelidade</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Descobrir traição de parceiro(a)</li>
+                        <li>Ver pai/mãe traindo</li>
+                        <li>Ser enganado por amigo próximo</li>
+                        <li>Perder alguém para outra pessoa</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Dor emocional intensa</li>
+                        <li>Raiva/ódio</li>
+                        <li>Humilhação</li>
+                        <li>Desconfiança</li>
+                        <li>Sensação de inadequação</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Confiar é perigoso"</li>
+                        <li>"Eu não sou suficiente"</li>
+                        <li>"As pessoas sempre mentem"</li>
+                        <li>"Amor não dura"</li>
+                        <li>"Eu preciso estar sempre vigilante"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 6 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #6</div>
+        <h2 class="cicatriz-title">Falência / Perda Financeira</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Perder negócio próprio</li>
+                        <li>Ser demitido injustamente</li>
+                        <li>Perder tudo em investimento/fraude</li>
+                        <li>Nome sujo / dívidas impagáveis</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Vergonha profunda</li>
+                        <li>Sensação de fracasso total</li>
+                        <li>Perda de identidade</li>
+                        <li>Desespero</li>
+                        <li>Impotência</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Eu sou um fracasso"</li>
+                        <li>"Meu valor está no que eu tenho"</li>
+                        <li>"Eu nunca vou me recuperar"</li>
+                        <li>"Sucesso é frágil e ilusório"</li>
+                        <li>"Eu arruino tudo que toco"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PÁGINA 3 -->
+<div class="page">
+    
+    <!-- CICATRIZ 7 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #7</div>
+        <h2 class="cicatriz-title">Luto / Perda</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Morte de pai/mãe/irmão</li>
+                        <li>Perda de filho</li>
+                        <li>Suicídio de alguém próximo</li>
+                        <li>Morte súbita/traumática</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Dor insuportável</li>
+                        <li>Culpa ("poderia ter feito algo")</li>
+                        <li>Raiva (da pessoa, de Deus, do mundo)</li>
+                        <li>Vazio existencial</li>
+                        <li>Medo da própria morte</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Nada é permanente"</li>
+                        <li>"Amor = perda inevitável"</li>
+                        <li>"Eu deveria ter morrido no lugar dele/dela"</li>
+                        <li>"A vida não tem sentido"</li>
+                        <li>"Não vale a pena se apegar"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 8 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #8</div>
+        <h2 class="cicatriz-title">Divórcio / Separação</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Fim de casamento</li>
+                        <li>Perda de guarda dos filhos</li>
+                        <li>Ver família se desmanchar</li>
+                        <li>Ser deixado por alguém que amava</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Falha total</li>
+                        <li>Rejeição profunda</li>
+                        <li>Raiva e mágoa</li>
+                        <li>Culpa</li>
+                        <li>Solidão</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Eu não sei amar direito"</li>
+                        <li>"Eu sempre estrago relacionamentos"</li>
+                        <li>"Amor não é para mim"</li>
+                        <li>"Eu magoei quem mais amava"</li>
+                        <li>"Casamento/compromisso não funciona"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 9 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #9</div>
+        <h2 class="cicatriz-title">Doença Grave (Própria ou de Alguém Próximo)</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Diagnóstico de doença crônica/terminal</li>
+                        <li>Ver alguém definhar</li>
+                        <li>Quase morrer</li>
+                        <li>Perder capacidades físicas</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Medo da morte</li>
+                        <li>Raiva de Deus/destino</li>
+                        <li>Impotência</li>
+                        <li>Luto antecipatório</li>
+                        <li>Culpa de sobrevivente</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Meu corpo me traiu"</li>
+                        <li>"A vida é frágil demais"</li>
+                        <li>"Eu sou um peso para os outros"</li>
+                        <li>"Não posso contar com nada"</li>
+                        <li>"Deus me abandonou"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- PÁGINA 4 -->
+<div class="page">
+    
+    <!-- CICATRIZ 10 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #10</div>
+        <h2 class="cicatriz-title">Humilhação Pública</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Ser exposto publicamente (erro no trabalho, escândalo)</li>
+                        <li>Ser ridicularizado em público</li>
+                        <li>Perder prestígio social</li>
+                        <li>Ter segredo revelado</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Vergonha tóxica</li>
+                        <li>Desejo de desaparecer</li>
+                        <li>Raiva de si mesmo</li>
+                        <li>Paranoia</li>
+                        <li>Perda de identidade</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Todos me julgam"</li>
+                        <li>"Eu nunca vou superar isso"</li>
+                        <li>"Minha reputação é quem eu sou"</li>
+                        <li>"Não posso ser vulnerável"</li>
+                        <li>"Preciso esconder quem eu realmente sou"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 11 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #11</div>
+        <h2 class="cicatriz-title">Abuso Sexual</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Abuso na infância/adolescência</li>
+                        <li>Estupro</li>
+                        <li>Assédio persistente</li>
+                        <li>Exploração sexual</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Vergonha profunda</li>
+                        <li>Culpa (mesmo sendo vítima)</li>
+                        <li>Nojo de si mesmo</li>
+                        <li>Medo/trauma</li>
+                        <li>Dissociação do próprio corpo</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"Meu corpo não é meu"</li>
+<li>"Eu sou sujo/impuro"</li>
+                        <li>"Foi minha culpa"</li>
+                        <li>"Sexualidade = perigo"</li>
+                        <li>"Eu não mereço ser respeitado"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CICATRIZ 12 -->
+    <div class="cicatriz-card">
+        <div class="cicatriz-number">CICATRIZ #12</div>
+        <h2 class="cicatriz-title">Injustiça / Ser Acusado Falsamente</h2>
+        
+        <div class="cicatriz-content">
+            <div class="column">
+                <div class="section-label">Eventos Típicos:</div>
+                <div class="section-content eventos">
+                    <ul>
+                        <li>Ser culpado por algo que não fez</li>
+                        <li>Ser demitido injustamente</li>
+                        <li>Perder processo judicial injusto</li>
+                        <li>Ser traído por quem confiava</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Sentimentos Comuns:</div>
+                <div class="section-content sentimentos">
+                    <ul>
+                        <li>Raiva extrema</li>
+                        <li>Impotência</li>
+                        <li>Descrença no sistema/mundo</li>
+                        <li>Amargura</li>
+                        <li>Desejo de vingança</li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="column">
+                <div class="section-label">Crenças Geradas:</div>
+                <div class="section-content crencas">
+                    <ul>
+                        <li>"O mundo é injusto"</li>
+                        <li>"Fazer o certo não importa"</li>
+                        <li>"As pessoas são más"</li>
+                        <li>"Não adianta lutar"</li>
+                        <li>"Eu preciso me proteger sempre"</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BOXES FINAIS -->
+    <div class="alert-box">
+        <strong>⚠️ DICA IMPORTANTE:</strong> Você pode ter VÁRIAS cicatrizes da MESMA categoria em diferentes momentos da vida. A cicatriz mais ANTIGA geralmente é a RAIZ que gera as outras.
+    </div>
+
+    <div class="tips-box">
+        <h3>🔍 Perguntas Reflexivas:</h3>
+        <ol>
+            <li>Qual momento da minha vida eu gostaria de apagar?</li>
+            <li>Quando foi a primeira vez que me senti "menos que" os outros?</li>
+            <li>Que evento me fez perder a inocência/confiança?</li>
+            <li>O que eu nunca contei para ninguém por vergonha/medo?</li>
+            <li>Quando eu comecei a acreditar que "eu não sou suficiente"?</li>
+        </ol>
+    </div>
+
+    <div class="page-number">Fim do Guia de Referência Emocional</div>
+</div>
+
+</body>
+</html>

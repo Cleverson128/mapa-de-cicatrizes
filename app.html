@@ -1,0 +1,810 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Workbook - O Mapa das Cicatrizes</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    
+    <style>
+        :root {
+            --primary: #1a472a; /* Verde Profundo */
+            --secondary: #2d5a3f; 
+            --accent: #c5a059; /* Dourado */
+            --bg: #f4f4f0; 
+            --text: #333;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* HEADER & CONTROLES */
+        .top-controls {
+            display: flex;
+            justify-content: flex-end;
+            padding: 10px 20px;
+            background: rgba(26, 71, 42, 0.05);
+            gap: 15px;
+            font-size: 0.85rem;
+        }
+
+        .btn-link {
+            background: none;
+            border: none;
+            color: var(--primary);
+            cursor: pointer;
+            text-decoration: underline;
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+        .btn-link:hover { color: var(--accent); }
+
+        /* BARRA DE PROGRESSO */
+        .progress-wrapper {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: var(--bg);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        .progress-bar-bg { width: 100%; height: 6px; background: #e0e0e0; }
+        .progress-bar { height: 100%; background: var(--accent); width: 0%; transition: width 0.5s ease; }
+        .progress-text {
+            text-align: center; font-size: 0.85rem; color: var(--primary);
+            padding: 5px 0; font-weight: bold; text-transform: uppercase;
+            letter-spacing: 1px; background: #fff; border-bottom: 1px solid #eee;
+        }
+
+        /* CONTAINER */
+        .app-container {
+            max-width: 900px; width: 95%; margin: 20px auto;
+            background: var(--white); box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            border-radius: 8px; overflow: hidden; min-height: 70vh;
+            padding-bottom: 80px; position: relative;
+        }
+
+        /* STEPS */
+        .step { display: none; padding: 30px 40px; animation: fadeIn 0.6s ease-out; }
+        .step.active { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(15px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* TIPOGRAFIA */
+        h1 { font-family: 'Cinzel', serif; font-size: 2.8em; line-height: 1.1; color: var(--white); margin-bottom: 15px; }
+        h2 { color: var(--primary); font-family: 'Cinzel', serif; border-bottom: 2px solid var(--accent); padding-bottom: 10px; margin-bottom: 25px; margin-top: 20px; font-size: 1.8em; }
+        h3 { color: var(--secondary); font-family: 'Cinzel', serif; font-size: 1.3em; margin-top: 35px; margin-bottom: 15px; font-weight: bold; border-left: 4px solid var(--accent); padding-left: 10px; }
+
+        /* CAPA */
+        .cover-section {
+            background: linear-gradient(135deg, var(--primary) 0%, #0d2b18 100%);
+            color: var(--white); text-align: center; padding: 60px 20px;
+            border: 4px double var(--accent); margin: 15px; border-radius: 4px;
+        }
+
+        /* ELEMENTOS DE TEXTO */
+        .quote-box { background: #fdfbf7; border-left: 4px solid var(--accent); padding: 20px; font-style: italic; color: #555; margin: 25px 0; font-family: 'Georgia', serif; font-size: 1.1em; }
+        .alert-box { background: rgba(197, 160, 89, 0.1); border: 1px solid var(--accent); padding: 20px; border-radius: 4px; margin: 25px 0; color: #4a4a4a; }
+        .info-box { background: #e3f2fd; border-left: 4px solid #1976d2; padding: 20px; margin: 25px 0; color: #0d47a1; }
+
+        /* LISTAS */
+        .instruction-list { list-style: none; counter-reset: item; margin-top: 20px; }
+        .instruction-list li { counter-increment: item; margin: 20px 0; padding-left: 45px; position: relative; }
+        .instruction-list li:before {
+            content: counter(item); position: absolute; left: 0; top: 0;
+            background: var(--primary); color: var(--accent); width: 30px; height: 30px;
+            border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: bold; font-family: 'Cinzel', serif;
+        }
+        
+        .checklist { list-style: none; padding-left: 10px; margin: 15px 0; }
+        .checklist li { margin-bottom: 12px; display: flex; align-items: flex-start; gap: 10px; }
+        .checklist li::before { content: "✓"; color: var(--accent); font-weight: bold; font-size: 1.2em; line-height: 1.4; }
+
+        /* INPUTS */
+        label { display: block; font-weight: bold; color: var(--primary); margin-top: 15px; font-size: 0.95em; margin-bottom: 5px; }
+        textarea, input[type="text"], input[type="number"], input[type="date"] {
+            width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 4px;
+            font-family: 'Lato', sans-serif; background: #fafafa; transition: 0.3s;
+        }
+        textarea:focus, input:focus { outline: none; border-color: var(--accent); background: #fff; box-shadow: 0 0 5px rgba(197, 160, 89, 0.3); }
+        textarea { min-height: 80px; resize: vertical; }
+        .checkbox-item { margin: 10px 0; display: flex; align-items: center; gap: 10px; }
+        input[type="checkbox"], input[type="radio"] { width: 18px; height: 18px; margin: 0; accent-color: var(--primary); }
+        .checkbox-item label { margin: 0; font-weight: normal; color: #444; }
+
+        /* CARD STYLE */
+        .card-repeat { background: #fff; border: 1px solid #eee; border-left: 4px solid var(--secondary); border-radius: 4px; padding: 25px; margin-bottom: 25px; box-shadow: 0 2px 5px rgba(0,0,0,0.03); }
+        .cicatriz-header { color: var(--accent); font-size: 1.1em; border-bottom: 1px solid #eee; display: block; margin-bottom: 15px; padding-bottom: 5px; font-weight: bold; }
+
+        /* NAVEGAÇÃO */
+        .nav-controls {
+            position: absolute; bottom: 0; left: 0; width: 100%; background: var(--white);
+            padding: 20px 40px; border-top: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; z-index: 100;
+        }
+        .btn { padding: 12px 25px; border: none; border-radius: 30px; cursor: pointer; font-weight: bold; transition: 0.3s; }
+        .btn-prev { background: #f0f0f0; color: #555; }
+        .btn-next { background: var(--primary); color: white; }
+        .btn-pdf { background: var(--accent); color: var(--primary); font-weight: 800; box-shadow: 0 4px 10px rgba(197, 160, 89, 0.4); }
+        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+
+        /* AREA PDF */
+        #print-area { display: none; font-family: 'Georgia', serif; color: #000; background: #fff; padding: 40px; border: 2px solid var(--primary); }
+        .pdf-header { text-align: center; margin-bottom: 40px; border-bottom: 1px solid #ccc; padding-bottom: 20px; }
+        .pdf-section { page-break-inside: avoid; margin-bottom: 30px; }
+        .pdf-title { color: #1a472a; font-size: 1.2em; border-bottom: 1px solid #ccc; padding-bottom: 5px; margin-bottom: 10px; font-weight: bold; }
+        .pdf-q { font-weight: bold; color: #333; font-size: 0.9em; margin-bottom: 2px; margin-top: 10px;}
+        .pdf-a { background: #f9f9f9; padding: 8px; border-left: 3px solid var(--accent); font-style: italic; margin-bottom: 10px; font-size: 0.95em; color: #555; }
+
+        @media(max-width: 600px) {
+            .app-container { margin: 0; border-radius: 0; width: 100%; min-height: 100vh; }
+            .step { padding: 20px; padding-bottom: 100px; }
+            h1 { font-size: 2em; }
+            .nav-controls { padding: 15px; }
+            .cover-section { margin: 0; border: none; padding: 40px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-controls">
+        <input type="file" id="importFile" style="display: none;" onchange="importData(this)">
+        <button class="btn-link" onclick="document.getElementById('importFile').click()"><i class="fas fa-upload"></i> Restaurar Backup</button>
+        <button class="btn-link" onclick="exportData()"><i class="fas fa-download"></i> Salvar Rascunho</button>
+    </div>
+
+    <div class="progress-wrapper">
+        <div class="progress-bar-bg">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="progress-text" id="progressText">Iniciando...</div>
+    </div>
+
+    <div class="app-container">
+        
+        <div class="step active" id="step0">
+            <div class="cover-section">
+                <h1>MAPEIE<br>SUAS<br>CICATRIZES</h1>
+                <div style="font-size: 1.2em; font-style: italic; margin-bottom: 40px; opacity: 0.9;">Guia Prático de Autoconhecimento e Reconstrução</div>
+                
+                <div style="border-top: 1px solid rgba(255,255,255,0.3); padding-top: 30px; margin-top: 30px;">
+                    <div>Por</div>
+                    <div style="font-weight: bold; font-size: 1.4em; margin: 10px 0;">Cléverson E. Costa</div>
+                    <div>Autor de "O Mapa das Cicatrizes"</div>
+                </div>
+
+                <button class="btn btn-pdf" style="margin-top: 40px; font-size: 1.1em; padding: 15px 40px;" onclick="nextStep()">
+                    INICIAR JORNADA <i class="fas fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+
+        <div class="step" id="step1">
+            <h2>BEM-VINDO À SUA JORNADA</h2>
+            
+            <p>Este workbook não é sobre apagar suas cicatrizes.<br>É sobre aprender a <strong>lê-las</strong>.</p>
+            <p>Cada ferida que você carrega conta uma história.<br>Não de derrota, mas de sobrevivência.</p>
+            
+            <div class="card-repeat" style="border-left-color: var(--accent);">
+                <p><strong>Nas próximas páginas, você vai:</strong></p>
+                <ul class="checklist">
+                    <li>Mapear suas 7 principais cicatrizes</li>
+                    <li>Identificar as "autoestradas mentais" que te aprisionam</li>
+                    <li>Ressignificar dor em propósito</li>
+                    <li>Construir seu novo pódio sobre fundações reais</li>
+                </ul>
+            </div>
+            
+            <div class="alert-box">
+                <strong>IMPORTANTE:</strong><br>
+                Este é um trabalho profundo. Reserve tempo. Seja honesto.<br>
+                Suas respostas são só suas.<br><br>
+                Ninguém precisa ver. Mas <strong>VOCÊ</strong> precisa enxergar.
+            </div>
+            
+            <div class="quote-box">
+                "Vamos começar?"<br>- Cléverson E. Costa
+            </div>
+
+            <hr style="border:0; border-top:1px solid #ccc; margin:30px 0;">
+
+            <h3>COMO USAR ESTE WORKBOOK</h3>
+            <ol class="instruction-list">
+                <li><strong>ENCONTRE UM LUGAR TRANQUILO</strong><br>20-30 minutos sem interrupções</li>
+                <li><strong>SEJA BRUTALMENTE HONESTO</strong><br>Não escreva o que "deveria" sentir. Escreva o que REALMENTE sente</li>
+                <li><strong>NÃO PULE EXERCÍCIOS</strong><br>Cada um prepara o próximo. A transformação está na sequência</li>
+                <li><strong>VOLTE QUANDO NECESSÁRIO</strong><br>Este workbook é cíclico. Revise a cada 3-6 meses</li>
+                <li><strong>COMPARTILHE SE SENTIR SEGURO</strong><br>Com terapeuta, mentor ou grupo de confiança. A cura acelera na comunidade</li>
+            </ol>
+            
+            <div class="info-box">
+                <strong>MATERIAIS NECESSÁRIOS:</strong>
+                <ul class="checklist">
+                    <li>Caneta (ou teclado)</li>
+                    <li>Coração aberto</li>
+                    <li>Coragem para encarar a verdade</li>
+                </ul>
+            </div>
+            <p style="text-align: center; margin-top: 20px; font-style: italic;">
+    Em dúvida sobre a nomeação? Consulte o 
+    <a href="guia-apoio.html" target="_blank" style="color: #1a472a; font-weight: bold; text-decoration: none;">⛑Guia de Referência Emocional (abre em nova aba)</a>.
+</p>
+            <p style="text-align: center; font-weight: bold; margin-top: 30px;">Pronto? Continue...</p>
+        </div>
+
+        <div class="step" id="step2">
+            <h2>PARTE 1: MAPEANDO SUAS CICATRIZES</h2>
+            <h3>EXERCÍCIO 1: AS 7 CICATRIZES</h3>
+            
+            <p>Toda cicatriz tem elementos fundamentais. Vamos investigar cada um.</p>
+            <p>Liste as 7 experiências que mais marcaram você:</p>
+             <p style="text-align: center; margin-top: 20px; font-style: italic;">
+    <a href="guia-apoio.html" target="_blank" style="color: #1a472a; font-weight: bold; text-decoration: none;">⛑Guia de Referência Emocional (abre em nova aba)</a>.
+</p>
+            <div id="container-cicatrizes"></div>
+
+            <div class="alert-box">
+                <strong>⚠️ ATENÇÃO:</strong> Identifique aquelas que geraram crenças como:
+                <ul class="checklist" style="margin-top:10px;">
+                    <li>"Eu não sou suficiente"</li>
+                    <li>"Eu preciso me virar sozinho"</li>
+                    <li>"Amor é condicional"</li>
+                    <li>"Sucesso = valor"</li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="step" id="step3">
+            <h3>EXERCÍCIO 2: A CICATRIZ RAIZ</h3>
+            
+            <p>De todas as 7 cicatrizes, qual é a <strong>RAIZ</strong> de todas as outras?</p>
+            <p style="font-size:0.9em; color:#666;">(Geralmente vem da infância/adolescência e moldou como você enxerga o mundo)</p>
+            
+            <div style="margin-top: 25px;">
+                <label>Minha Cicatriz Raiz é:</label>
+                <textarea id="cicatriz_raiz" placeholder="Descreva qual das 7 é a mais fundamental"></textarea>
+            </div>
+            
+            <div>
+                <label>Ela me ensinou que:</label>
+                <textarea id="raiz_ensino"></textarea>
+            </div>
+            
+            <div>
+                <label>Por causa dela, eu desenvolvi o padrão de:</label>
+                <div class="checkbox-item"><input type="checkbox" id="p1"><label for="p1">Autossuficiência extrema</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="p2"><label for="p2">Busca por aprovação</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="p3"><label for="p3">Medo de abandono</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="p4"><label for="p4">Perfeccionismo</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="p5"><label for="p5">Dificuldade de confiar</label></div>
+            </div>
+            
+            <div class="quote-box">
+                <strong>REFLEXÃO:</strong> Como essa cicatriz raiz aparece na sua vida HOJE?
+            </div>
+            
+            <div><label>No trabalho:</label><textarea id="raiz_trabalho"></textarea></div>
+            <div><label>Nos relacionamentos:</label><textarea id="raiz_relac"></textarea></div>
+            <div><label>Na relação comigo mesmo:</label><textarea id="raiz_eu"></textarea></div>
+        </div>
+
+        <div class="step" id="step4">
+            <h3>EXERCÍCIO 3: O CUSTO DAS CICATRIZES</h3>
+            <p>Suas cicatrizes não curadas têm um preço. Complete:</p>
+            
+            <div><label>Por causa das minhas feridas, eu PERDI:</label><textarea id="custo_perdi"></textarea></div>
+            <div><label>Por causa das minhas feridas, eu SABOTEI:</label><textarea id="custo_sabotei"></textarea></div>
+            <div><label>Por causa das minhas feridas, eu CONSTRUÍ MUROS em:</label><textarea id="custo_muros"></textarea></div>
+            <div><label>A pessoa que mais sofreu com isso foi:</label><input type="text" id="custo_pessoa"></div>
+            <div><label>Se eu pudesse voltar no tempo, diria ao meu EU ferido:</label><textarea id="custo_msg"></textarea></div>
+            
+            <div class="quote-box">"A dor não curada não desaparece. Ela apenas escolhe outras vítimas."</div>
+        </div>
+
+        <div class="step" id="step5">
+            <h3>EXERCÍCIO 4: A RESSIGNIFICAÇÃO</h3>
+            <p>Agora vamos <strong>TRANSFORMAR</strong> dor em sabedoria.</p>
+            
+            <div id="container-ressig"></div>
+            
+            <div class="quote-box">"Suas cicatrizes não são lembranças de derrota. São testemunhos de sobrevivência."</div>
+        </div>
+
+        <div class="step" id="step6">
+            <h2>PARTE 2: QUEBRANDO AUTOESTRADAS MENTAIS</h2>
+            <h3>EXERCÍCIO 5: SUAS AUTOESTRADAS MENTAIS</h3>
+            
+            <p>Seu cérebro criou "autoestradas" - pensamentos automáticos baseados nas suas cicatrizes.</p>
+            
+            <div id="container-autoestradas"></div>
+            
+            <div class="info-box">
+                <strong>EXEMPLOS COMUNS:</strong>
+                <ul class="checklist">
+                    <li>"Eu não sou bom o suficiente"</li>
+                    <li>"Eu sempre estrago tudo"</li>
+                    <li>"Ninguém fica comigo"</li>
+                    <li>"Eu tenho que provar meu valor"</li>
+                </ul>
+            </div>
+            
+            <div><label>Qual dessas autoestradas é a mais DESTRUTIVA na sua vida?</label><textarea id="autoestrada_pior"></textarea></div>
+        </div>
+
+        <div class="step" id="step7">
+            <h3>EXERCÍCIO 6: CONSTRUINDO O DESVIO</h3>
+            <p>Para cada autoestrada tóxica, construa um DESVIO - a VERDADE que substitui a mentira.</p>
+            
+            <div id="container-desvios"></div>
+            
+            <div class="alert-box">⚡ <strong>LEMBRE-SE:</strong> Você não destrói uma autoestrada de 40 anos com um pensamento positivo. Você constrói um DESVIO, um dia de cada vez.</div>
+        </div>
+
+        <div class="step" id="step8">
+            <h3>EXERCÍCIO 7: O CONTRATO COMIGO MESMO</h3>
+            
+            <div><label>Eu, (seu nome completo):</label><input type="text" id="contrato_nome"></div>
+            
+            <p style="margin-top: 20px;"><strong>Me comprometo:</strong></p>
+            <div class="checkbox-item"><input type="checkbox" id="c1"><label for="c1">A parar de trafegar na autoestrada da mentira</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="c2"><label for="c2">A construir conscientemente o desvio da verdade</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="c3"><label for="c3">A ser paciente comigo no processo</label></div>
+            <div class="checkbox-item"><input type="checkbox" id="c4"><label for="c4">A buscar ajuda quando necessário</label></div>
+            
+            <h3 style="margin-top:40px;">MINHA ROTINA DE RECONSTRUÇÃO:</h3>
+            <div><label>TODO DIA, eu vou:</label><textarea id="rotina_dia"></textarea></div>
+            <div><label>TODA SEMANA, eu vou:</label><textarea id="rotina_semana"></textarea></div>
+            <div><label>TODO MÊS, eu vou revisar:</label><textarea id="rotina_mes"></textarea></div>
+            
+            <div>
+                <label>MINHA REDE DE APOIO (3 pessoas):</label>
+                <input type="text" id="apoio1" placeholder="1. Nome" style="margin-bottom:5px;">
+                <input type="text" id="apoio2" placeholder="2. Nome" style="margin-bottom:5px;">
+                <input type="text" id="apoio3" placeholder="3. Nome">
+            </div>
+            
+            <div><label>Data do Contrato:</label><input type="date" id="contrato_data"></div>
+            <div class="quote-box">"A mudança não acontece num dia. Mas começa em um."</div>
+        </div>
+
+        <div class="step" id="step9">
+            <h2>PARTE 3: CONSTRUINDO SEU NOVO PÓDIO</h2>
+            <h3>EXERCÍCIO 8: O PÓDIO FALSO vs. O PÓDIO REAL</h3>
+            
+            <div><label>O PÓDIO QUE EU PERSEGUI (ou persigo):</label><textarea id="podio_falso"></textarea></div>
+            <div><label>Por que eu achava que isso me completaria:</label><textarea id="podio_porq"></textarea></div>
+            
+            <div style="margin-top:20px;">
+                <label>O PREÇO QUE PAGUEI por esse pódio:</label>
+                <div class="checkbox-item"><input type="checkbox" id="preco1"><label for="preco1">Relacionamentos</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="preco2"><label for="preco2">Saúde</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="preco3"><label for="preco3">Paz</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="preco4"><label for="preco4">Integridade</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="preco5"><label for="preco5">Presença com família</label></div>
+            </div>
+            
+            <h3 style="margin-top:40px;">MEU NOVO PÓDIO tem 3 degraus:</h3>
+            
+            <div class="card-repeat">
+                <div class="cicatriz-header">DEGRAU 1 - PAZ</div>
+                <label>O que significa paz pra mim:</label><textarea id="podio_paz_def"></textarea>
+                <label>Como eu construo isso diariamente:</label><textarea id="podio_paz_como"></textarea>
+            </div>
+            <div class="card-repeat">
+                <div class="cicatriz-header">DEGRAU 2 - RELAÇÕES</div>
+                <label>Quem são as 5 pessoas mais importantes:</label>
+                <textarea id="podio_relacoes_lista" placeholder="Liste os nomes..."></textarea>
+                <label>Como eu invisto nelas:</label><textarea id="podio_rel_como"></textarea>
+            </div>
+            <div class="card-repeat">
+                <div class="cicatriz-header">DEGRAU 3 - PROPÓSITO</div>
+                <label>Meu propósito único é:</label><textarea id="podio_prop"></textarea>
+                <label>Como eu sirvo com isso:</label><textarea id="podio_prop_como"></textarea>
+            </div>
+        </div>
+
+        <div class="step" id="step10">
+            <h3>EXERCÍCIO 9: A PRIMEIRA VENDA</h3>
+            <p>A venda mais difícil é pra você mesmo.</p>
+            
+            <h3 style="margin-top:30px;">O QUE EU PRECISO "COMPRAR" (acreditar):</h3>
+            
+            <div class="card-repeat">
+                <div class="cicatriz-header">1. SOBRE MEU VALOR</div>
+                <label>Eu não sou:</label><input type="text" id="venda_valor_nao">
+                <label>Eu SOU:</label><input type="text" id="venda_valor_sim">
+            </div>
+            
+            <div class="card-repeat">
+                <div class="cicatriz-header">2. SOBRE MEU PASSADO</div>
+                <label>Minhas cicatrizes não significam:</label><input type="text" id="venda_pass_nao">
+                <label>Elas provam que:</label><input type="text" id="venda_pass_sim">
+            </div>
+            
+            <div class="card-repeat">
+                <div class="cicatriz-header">3. SOBRE MEU FUTURO</div>
+                <label>Eu não estou condenado a:</label><input type="text" id="venda_fut_nao">
+                <label>Eu estou sendo preparado para:</label><input type="text" id="venda_fut_sim">
+            </div>
+            
+            <div style="margin-top:30px;">
+                <label>ARGUMENTO DE VENDAS (Por que EU valho a pena?):</label><textarea id="venda_argumento"></textarea>
+            </div>
+            
+            <div>
+                <label>Que evidências eu tenho disso?</label>
+                <textarea id="venda_evidencias" placeholder="Liste 3 evidências..."></textarea>
+            </div>
+            
+            <div><label>FECHAMENTO (Compromisso):</label><textarea id="venda_compromisso"></textarea></div>
+        </div>
+
+        <div class="step" id="step11">
+            <h3>EXERCÍCIO 10: MINHA DECLARAÇÃO DE RECONSTRUÇÃO</h3>
+            <p>Complete as frases:</p>
+            
+            <div><label>EU SOU alguém que:</label><textarea id="decl_sou"></textarea></div>
+            <div><label>EU NÃO SOU MAIS definido por:</label><textarea id="decl_nao"></textarea></div>
+            <div><label>MINHAS CICATRIZES me ensinaram:</label><textarea id="decl_cicatrizes"></textarea></div>
+            <div><label>MEU MAIOR MEDO hoje é:</label><textarea id="decl_medo"></textarea></div>
+            <div><label>Mas EU SEI que:</label><textarea id="decl_sei"></textarea></div>
+            <div><label>EM 1 ANO, eu quero olhar no espelho e ver:</label><textarea id="decl_1ano"></textarea></div>
+            <div><label>EM 5 ANOS, meu legado será:</label><textarea id="decl_5anos"></textarea></div>
+            
+            <div style="margin-top:20px;">
+                <label>A PESSOA QUE EU QUERO SER é alguém que:</label>
+                <div class="checkbox-item"><input type="checkbox" id="ser1"><label for="ser1">Vive com paz interior</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="ser2"><label for="ser2">Ama profundamente</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="ser3"><label for="ser3">Serve com propósito</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="ser4"><label for="ser4">Enfrenta a verdade</label></div>
+                <div class="checkbox-item"><input type="checkbox" id="ser5"><label for="ser5">Honra suas cicatrizes</label></div>
+            </div>
+            
+            <div class="quote-box">"Você não é o que aconteceu com você. Você é o que você escolhe se tornar."</div>
+        </div>
+
+        <div class="step" id="step12">
+            <h2>PARABÉNS! 🎉</h2>
+            <p style="font-size: 1.2em;">Você completou o mapeamento das suas cicatrizes.</p>
+            <p>Mas este não é o fim. É o <strong>COMEÇO</strong>.</p>
+            
+            <h3 style="margin-top:30px;">O QUE FAZER AGORA:</h3>
+            <ol class="instruction-list">
+                <li><strong>REVISE SUAS RESPOSTAS</strong><br>Leia tudo que você escreveu. Veja o padrão que emerge</li>
+                <li><strong>ESCOLHA 1 AUTOESTRADA PARA BLOQUEAR</strong><br>Comece pela mais destrutiva. Pratique o "desvio" por 30 dias</li>
+                <li><strong>COMPARTILHE COM 1 PESSOA DE CONFIANÇA</strong><br>Terapeuta, mentor, amigo próximo. A cura acelera na vulnerabilidade</li>
+                <li><strong>REFAÇA ESTE WORKBOOK EM 90 DIAS</strong><br>Veja o quanto você evoluiu. Ajuste suas declarações</li>
+            </ol>
+            
+            <div class="alert-box">
+                <strong>LEMBRE-SE:</strong> Transformação não é evento. É processo. Seja gentil consigo mesmo. Celebre cada pequena vitória. <strong>Você está no caminho certo.</strong>
+            </div>
+
+            <div style="text-align: center; margin-top: 40px;">
+                <button class="btn btn-pdf" style="font-size:1.2em; padding:15px 40px;" onclick="generatePDF()">
+                    <i class="fas fa-file-pdf"></i> BAIXAR WORKBOOK COMPLETO (PDF)
+                </button>
+            </div>
+            
+            <hr style="border:0; border-top:1px solid #ccc; margin:40px 0;">
+            
+            <h2>RECURSOS ADICIONAIS</h2>
+            <div style="text-align: left; background: #fafafa; padding: 20px; border-radius: 8px;">
+                <p><strong>📖 LEIA O LIVRO COMPLETO:</strong> "O Mapa das Cicatrizes" - Cléverson E. Costa</p>
+                <p><strong>🎤 ASSISTA AS PALESTRAS:</strong> YouTube: @cleverson128</p>
+                <p><strong>💬 PARTICIPE DA COMUNIDADE:</strong> Instagram: @cleverson.costaoficial</p>
+                <p><strong>📧 MENTORIA INDIVIDUAL:</strong> cleverson128@hotmail.com</p>
+            </div>
+            
+            <div class="quote-box">"Suas cicatrizes são o mapa mais honesto que você tem para chegar ao seu destino."</div>
+        </div>
+
+        <div class="nav-controls" id="navControls" style="display:none;">
+            <button class="btn btn-prev" onclick="prevStep()">Voltar</button>
+            <div style="font-size: 0.8em; color: #999;" id="stepCounter"></div>
+            <button class="btn btn-next" onclick="nextStep()">Continuar</button>
+        </div>
+
+    </div>
+
+    <div id="print-area">
+        <div class="pdf-header">
+            <h1 style="color: #1a472a; font-size: 24px; margin-bottom:5px;">O MAPA DAS CICATRIZES</h1>
+            <p>Workbook de Reconstrução Pessoal</p>
+            <p style="font-size: 12px; margin-top: 5px;">Autor: Cléverson E. Costa</p>
+        </div>
+        <div id="pdf-content"></div>
+        <div style="text-align: center; margin-top: 50px; border-top: 1px solid #eee; padding-top: 20px; font-size: 10px; color: #666;">
+            "Um testemunho sobre o poder da graça e o mapa invisível traçado nas cicatrizes da alma."
+        </div>
+    </div>
+
+    <script>
+        let currentStep = 0;
+        const totalSteps = 12; // 0 a 12 (13 telas)
+        
+        const motivationalPhrases = [
+            "A jornada começa agora.", // Capa
+            "Preparando o terreno...", // Intro
+            "Coragem para olhar.", // Cicatrizes
+            "Encontrando a raiz.", // Raiz
+            "Reconhecendo o custo.", // Custo
+            "Transformando dor em ouro.", // Ressignificação
+            "Identificando armadilhas.", // Autoestradas
+            "Construindo novos caminhos.", // Desvios
+            "Firmando o compromisso.", // Contrato
+            "Erguendo o novo pódio.", // Pódio
+            "Acredite em você.", // Vendas
+            "Quem você se torna.", // Declaração
+            "Missão cumprida!" // Parabéns
+        ];
+
+         window.onload = function() {
+    renderDynamicFields();
+    loadLocalStorage(); // Carrega dados antigos se houver
+    
+    // NOVO: Verifica se veio nome da Landing Page
+    const urlParams = new URLSearchParams(window.location.search);
+    const nomeUrl = urlParams.get('user_name');
+    
+    if(nomeUrl) {
+        // Se veio da Landing Page, preenche o campo e salva
+        const campoNome = document.getElementById('user_name');
+        if(campoNome && !campoNome.value) { // Só preenche se estiver vazio
+            campoNome.value = nomeUrl;
+            saveLocalStorage(); 
+        }
+    }
+
+    updateUI();
+};
+
+        function renderDynamicFields() {
+            // CICATRIZES (7)
+            const cContainer = document.getElementById('container-cicatrizes');
+            for(let i=1; i<=7; i++) {
+                cContainer.innerHTML += `
+                    <div class="card-repeat">
+                        <div class="cicatriz-header">CICATRIZ ${i}</div>
+                        <label>Evento (o que aconteceu):</label>
+                        <input type="text" id="c${i}_evento" placeholder="${i === 1 ? 'Ex: Meu pai me abandonou aos 5 anos' : ''}">
+                        
+                        <label>Idade:</label>
+                        <input type="number" id="c${i}_idade " placeholder="Ex: 5" style="width:100px">
+                        
+                        <label>O que eu senti:</label>
+                        <textarea id="c${i}_sentimento" placeholder="Ex: Medo, abandono..."></textarea>
+                        
+                        <label>O que isso me fez acreditar sobre mim (Crença):</label>
+                        <textarea id="c${i}_crenca" placeholder="Ex: Eu não sou suficiente..."></textarea>
+                    </div>
+                `;
+            }
+
+            // RESSIGNIFICAÇÃO (7)
+            const rContainer = document.getElementById('container-ressig');
+            for(let i=1; i<=7; i++) {
+                rContainer.innerHTML += `
+                    <div class="card-repeat">
+                        <div class="cicatriz-header">CICATRIZ ${i}</div>
+                        <label>O que a dor me ensinou:</label><textarea id="r${i}_ensino"></textarea>
+                        <label>O que eu faria diferente hoje:</label><textarea id="r${i}_diferente"></textarea>
+                        <label>O que ainda carrego daqui (força/sabedoria):</label><textarea id="r${i}_forca"></textarea>
+                    </div>
+                `;
+            }
+
+            // AUTOESTRADAS (5)
+            const aContainer = document.getElementById('container-autoestradas');
+            for(let i=1; i<=5; i++) {
+                aContainer.innerHTML += `
+                    <div class="card-repeat">
+                        <div class="cicatriz-header">AUTOESTRADA ${i}</div>
+                        <label>Pensamento automático:</label><input type="text" id="a${i}_pensamento" placeholder="${i === 1 ? 'Ex: Eu sempre estrago tudo' : ''}">
+                        <label>Origem (qual cicatriz gerou isso?):</label><input type="text" id="a${i}_origem">
+                        <label>Frequência:</label>
+                        <div class="checkbox-item"><input type="radio" name="freq${i}" id="a${i}_diaria" value="Diária"><label for="a${i}_diaria">Diária</label></div>
+                        <div class="checkbox-item"><input type="radio" name="freq${i}" id="a${i}_semanal" value="Semanal"><label for="a${i}_semanal">Semanal</label></div>
+                        <div class="checkbox-item"><input type="radio" name="freq${i}" id="a${i}_crise" value="Crise"><label for="a${i}_crise">Em crises</label></div>
+                    </div>
+                `;
+            }
+
+            // DESVIOS (5)
+            const dContainer = document.getElementById('container-desvios');
+            for(let i=1; i<=5; i++) {
+                dContainer.innerHTML += `
+                    <div class="card-repeat">
+                        <div class="cicatriz-header">DESVIO ${i}</div>
+                        <label>AUTOESTRADA TÓXICA:</label><input type="text" id="d${i}_autoestrada" placeholder="Cole o pensamento da Autoestrada ${i}">
+                        <label>MEU DESVIO (A VERDADE):</label><textarea id="d${i}_verdade" placeholder="A verdade é que..."></textarea>
+                        <label>EVIDÊNCIAS da verdade (3 provas):</label>
+                        <textarea id="d${i}_evidencias" placeholder="1... 2... 3..."></textarea>
+                        <label>DECLARAÇÃO DIÁRIA:</label><textarea id="d${i}_declaracao"></textarea>
+                    </div>
+                `;
+            }
+        }
+
+        // --- SISTEMA DE NAVEGAÇÃO ---
+        function updateUI() {
+            document.querySelectorAll('.step').forEach((el, index) => {
+                el.classList.remove('active');
+                if(index === currentStep) el.classList.add('active');
+            });
+
+            const percent = (currentStep / totalSteps) * 100;
+            document.getElementById('progressBar').style.width = percent + '%';
+            document.getElementById('progressText').innerText = motivationalPhrases[currentStep] || "Continuando...";
+
+            const nav = document.getElementById('navControls');
+            if(currentStep === 0) nav.style.display = 'none';
+            else {
+                nav.style.display = 'flex';
+                document.getElementById('stepCounter').innerText = `${currentStep}/${totalSteps}`;
+                const btnNext = document.querySelector('.btn-next');
+                if(currentStep === totalSteps) btnNext.style.display = 'none';
+                else btnNext.style.display = 'block';
+            }
+            saveLocalStorage();
+            window.scrollTo(0,0);
+        }
+
+        function nextStep() { if(currentStep < totalSteps) { currentStep++; updateUI(); } }
+        function prevStep() { if(currentStep > 0) { currentStep--; updateUI(); } }
+
+        // --- SISTEMA DE DADOS ---
+        function collectData() {
+            const allInputs = document.querySelectorAll('input, textarea');
+            const data = {};
+            allInputs.forEach(input => {
+                if(input.id) {
+                    if(input.type === 'checkbox' || input.type === 'radio') {
+                        if(input.checked) data[input.id] = true; 
+                        // Para radio buttons, precisamos de logica especifica se quisermos salvar valor, mas ID check resolve visualmente
+                    } else {
+                        data[input.id] = input.value;
+                    }
+                }
+            });
+            return data;
+        }
+
+        function saveLocalStorage() { localStorage.setItem('workbook_data_full', JSON.stringify(collectData())); }
+        
+        function loadLocalStorage() {
+            const data = JSON.parse(localStorage.getItem('workbook_data_full'));
+            if(data) populateFields(data);
+        }
+
+        function populateFields(data) {
+            for(const key in data) {
+                const el = document.getElementById(key);
+                if(el) {
+                    if(el.type === 'checkbox' || el.type === 'radio') el.checked = true;
+                    else el.value = data[key];
+                }
+            }
+        }
+
+        function exportData() {
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(collectData()));
+            const node = document.createElement('a');
+            node.setAttribute("href", dataStr);
+            node.setAttribute("download", "meu_mapa_backup.json");
+            document.body.appendChild(node);
+            node.click();
+            node.remove();
+        }
+
+        function importData(input) {
+            const file = input.files[0];
+            if(!file) return;
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    populateFields(JSON.parse(e.target.result));
+                    saveLocalStorage();
+                    alert("Backup restaurado com sucesso!");
+                } catch(err) { alert("Erro ao ler arquivo."); }
+            };
+            reader.readAsText(file);
+        }
+
+        // --- GERADOR DE PDF COMPLETO ---
+        function generatePDF() {
+            const contentDiv = document.getElementById('pdf-content');
+            contentDiv.innerHTML = '';
+            
+            // DADOS INICIAIS
+            const contratoNome = document.getElementById('contrato_nome').value || "Viajante";
+            const dataHoje = new Date().toLocaleDateString('pt-BR');
+            let html = `<div style="text-align:center; margin-bottom:20px;"><strong>Proprietário:</strong> ${contratoNome} | <strong>Data:</strong> ${dataHoje}</div><hr>`;
+
+            // DEFINIÇÃO DAS SEÇÕES DO PDF (MAPEAMENTO COMPLETO)
+            const sections = [
+                { title: "Parte 1: As 7 Cicatrizes", ids: [] },
+                { title: "Cicatriz Raiz", ids: ["cicatriz_raiz", "raiz_ensino", "raiz_padrao", "raiz_trabalho", "raiz_relac", "raiz_eu"] },
+                { title: "O Custo", ids: ["custo_perdi", "custo_sabotei", "custo_muros", "custo_pessoa", "custo_msg"] },
+                { title: "Ressignificação", ids: [] },
+                { title: "Parte 2: Autoestradas Mentais", ids: ["autoestrada_pior"] }, // + loops
+                { title: "Desvios (Verdades)", ids: [] },
+                { title: "Parte 3: Contrato", ids: ["contrato_nome", "rotina_dia", "rotina_semana", "rotina_mes", "apoio1", "apoio2", "apoio3"] },
+                { title: "Pódio Falso vs Real", ids: ["podio_falso", "podio_porq", "podio_paz_def", "podio_paz_como", "podio_relacoes_lista", "podio_rel_como", "podio_prop", "podio_prop_como"] },
+                { title: "A Primeira Venda", ids: ["venda_valor_nao", "venda_valor_sim", "venda_pass_nao", "venda_pass_sim", "venda_fut_nao", "venda_fut_sim", "venda_argumento", "venda_evidencias", "venda_compromisso"] },
+                { title: "Declaração Final", ids: ["decl_sou", "decl_nao", "decl_cicatrizes", "decl_medo", "decl_sei", "decl_1ano", "decl_5anos"] }
+            ];
+
+            // Preencher IDs dinâmicos
+            for(let i=1; i<=7; i++) sections[0].ids.push(`c${i}_evento`, `c${i}_idade`, `c${i}_sentimento`, `c${i}_crenca`);
+            for(let i=1; i<=7; i++) sections[3].ids.push(`r${i}_ensino`, `r${i}_diferente`, `r${i}_forca`);
+            for(let i=1; i<=5; i++) {
+                sections[4].ids.push(`a${i}_pensamento`, `a${i}_origem`);
+                sections[5].ids.push(`d${i}_autoestrada`, `d${i}_verdade`, `d${i}_evidencias`, `d${i}_declaracao`);
+            }
+
+            // GERAÇÃO DO HTML
+            sections.forEach(sec => {
+                let sectionContent = "";
+                let hasData = false;
+                
+                sec.ids.forEach(id => {
+                    const el = document.getElementById(id);
+                    if(el && el.value) {
+                        hasData = true;
+                        // Tentar pegar label
+                        let labelTxt = id; 
+                        // Lógica simples para labels baseada no DOM
+                        const prev = el.previousElementSibling;
+                        if(prev && (prev.tagName === 'LABEL' || prev.tagName === 'STRONG' || prev.className === 'cicatriz-header')) {
+                             labelTxt = prev.innerText;
+                        }
+                        
+                        // Header de Repetição no PDF
+                        if(id.includes('_evento')) sectionContent += `<div style="margin-top:10px; border-top:1px dashed #ccc;"></div>`;
+                        if(id.includes('_ensino') && id.startsWith('r')) sectionContent += `<div style="margin-top:10px; border-top:1px dashed #ccc;"></div>`;
+
+                        sectionContent += `<div class="pdf-q">${labelTxt}</div><div class="pdf-a">${el.value}</div>`;
+                    }
+                });
+
+                if(hasData) {
+                    html += `<div class="pdf-section"><div class="pdf-title">${sec.title}</div>${sectionContent}</div>`;
+                }
+            });
+
+            contentDiv.innerHTML = html;
+            const element = document.getElementById('print-area');
+            element.style.display = 'block';
+
+            const opt = {
+                margin: 0.5,
+                filename: 'Meu_Workbook_Cicatrizes.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2 },
+                jsPDF: { unit: 'in', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(opt).from(element).save().then(() => {
+                element.style.display = 'none';
+            });
+        }
+    </script>
+</body>
+</html>

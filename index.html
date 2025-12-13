@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mapeie Suas Cicatrizes - Workbook Gratuito | Cléverson E. Costa</title>
+    <meta name="description" content="Transforme suas cicatrizes em um mapa para o propósito. Baixe gratuitamente o workbook completo de autoconhecimento.">
+    
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Lato:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <script>
+      (function (s, e, n, d, er) {
+        s['Sender'] = er;
+        s[er] = s[er] || function () {
+          (s[er].q = s[er].q || []).push(arguments)
+        }, s[er].l = 1 * new Date();
+        var a = e.createElement(n),
+            m = e.getElementsByTagName(n)[0];
+        a.async = 1;
+        a.src = d;
+        m.parentNode.insertBefore(a, m)
+      })(window, document, 'script', 'https://cdn.sender.net/accounts_resources/universal.js', 'sender');
+      // SUBSTITUA ESTE ID pelo seu ID de conta longo, se for diferente
+      sender('6a488022a38762'); 
+    </script>
+    
+    <style>
+        :root {
+            --primary: #1a472a; /* Verde Profundo */
+            --secondary: #2d5a3f;
+            --accent: #c5a059; /* Dourado */
+            --bg: #f4f4f0;
+            --text: #333;
+            --white: #ffffff;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Lato', sans-serif;
+            color: var(--text);
+            line-height: 1.6;
+            background-color: var(--bg);
+            overflow-x: hidden;
+        }
+
+        h1, h2, h3 { font-family: 'Cinzel', serif; }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(135deg, var(--primary) 0%, #0d2b18 100%);
+            color: var(--white);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+            border-bottom: 5px solid var(--accent);
+        }
+
+        .hero-content {
+            max-width: 1200px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+            z-index: 1;
+        }
+
+        .hero-text h1 {
+            font-size: 3.5em;
+            line-height: 1.1;
+            margin-bottom: 20px;
+            color: var(--accent);
+        }
+
+        .hero-text .subtitle {
+            font-size: 1.4em;
+            margin-bottom: 30px;
+            opacity: 0.9;
+            font-style: italic;
+            font-family: 'Lato', sans-serif;
+        }
+
+        .hero-text p {
+            font-size: 1.1em;
+            margin-bottom: 20px;
+            opacity: 0.9;
+        }
+
+        .benefits { list-style: none; margin: 30px 0; }
+        .benefits li { padding: 10px 0 10px 35px; position: relative; font-size: 1.1em; }
+        .benefits li:before {
+            content: "✓"; position: absolute; left: 0;
+            color: var(--accent); font-weight: bold; font-size: 1.3em;
+        }
+
+        /* FORM CARD */
+        .form-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            border: 1px solid var(--accent);
+        }
+
+        .form-card h2 {
+            color: var(--primary);
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .form-card .form-subtitle {
+            color: #666;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 1em;
+        }
+
+        .trust-badge {
+            text-align: center; margin-top: 20px; padding-top: 20px; border-top: 1px dashed #ddd; color: var(--primary); font-size: 0.9em;
+        }
+
+        /* PREVIEW SECTION */
+        .preview-section { background: var(--white); padding: 80px 20px; }
+        .preview-content { max-width: 1200px; margin: 0 auto; }
+        .preview-content h2 { color: var(--primary); font-size: 2.5em; text-align: center; margin-bottom: 50px; }
+
+        .preview-grid {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; margin-bottom: 50px;
+        }
+
+        .preview-card {
+            background: #fafafa; padding: 30px;
+            border-radius: 4px; border: 1px solid #eee;
+            border-left: 4px solid var(--accent);
+            transition: transform 0.3s;
+        }
+        .preview-card:hover { transform: translateY(-5px); }
+
+        .preview-card h3 { color: var(--secondary); font-size: 1.3em; margin-bottom: 15px; }
+        .preview-card p { color: #555; font-size: 0.95em; }
+
+        .testimonial {
+            background: var(--bg); padding: 40px; border-radius: 8px;
+            border: 1px solid var(--accent); max-width: 800px; margin: 0 auto;
+            text-align: center; font-style: italic; color: var(--text);
+        }
+        .testimonial-author { margin-top: 20px; font-weight: bold; color: var(--primary); font-style: normal; font-family: 'Cinzel', serif;}
+
+        /* ABOUT AUTHOR */
+        .about-author {
+            background: linear-gradient(180deg, var(--primary) 0%, #0d2b18 100%);
+            color: var(--white); padding: 80px 20px;
+        }
+        .about-content { max-width: 800px; margin: 0 auto; text-align: center; }
+        .about-content h2 { color: var(--accent); font-size: 2.5em; margin-bottom: 30px; }
+        
+        .credentials {
+            display: flex; justify-content: center; gap: 15px; flex-wrap: wrap; margin-top: 40px;
+        }
+        .credential-badge {
+            background: rgba(255,255,255,0.05); padding: 10px 20px;
+            border: 1px solid rgba(197, 160, 89, 0.3); border-radius: 30px; font-size: 0.9em;
+        }
+
+        /* FINAL CTA */
+        .final-cta { background: var(--bg); padding: 80px 20px; text-align: center; }
+        .final-cta h2 { color: var(--primary); font-size: 2.2em; margin-bottom: 20px; }
+        .cta-button {
+            display: inline-block; padding: 20px 50px;
+            background: var(--accent); color: var(--primary);
+            text-decoration: none; border-radius: 30px;
+            font-size: 1.2em; font-weight: 800; transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(197, 160, 89, 0.4);
+            cursor: pointer;
+        }
+        .cta-button:hover { transform: translateY(-3px); filter: brightness(1.1); }
+
+        /* FOOTER */
+        footer { background: #0d2b18; color: #aaa; padding: 40px 20px; text-align: center; font-size: 0.9em; }
+        footer a { color: var(--accent); text-decoration: none; }
+
+        /* RESPONSIVE */
+        @media (max-width: 968px) {
+            .hero-content { grid-template-columns: 1fr; gap: 40px; }
+            .hero-text h1 { font-size: 2.2em; }
+            .form-card { padding: 30px 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1>MAPEIE SUAS<br>CICATRIZES</h1>
+                <p class="subtitle">Ferramenta Interativa de Reconstrução Pessoal</p>
+                
+                <p>Este não é apenas um e-book. É um <strong>software de autoconhecimento guiado</strong> para você identificar as feridas que moldaram sua vida — e ressignificá-las em força.</p>
+                
+                <ul class="benefits">
+                    <li>Ambiente seguro e privado</li>
+                    <li>Exercícios interativos passo a passo</li>
+                    <li>Geração de Relatório PDF Personalizado</li>
+                    <li>Identificação de padrões tóxicos</li>
+                </ul>
+            </div>
+
+            <div class="form-card" id="formulario-topo">
+                <h2>Acessar Ferramenta</h2>
+                <p class="form-subtitle">É gratuito. Preencha para liberar seu acesso imediato.</p>
+                
+                <div style="text-align: left" class="sender-form-field" data-sender-form-id="b68j6z"></div>
+
+                <div class="trust-badge">
+                    <p>⭐⭐⭐⭐⭐ Vamos impactar 1.000.000,00 de vidas</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="preview-section">
+        <div class="preview-content">
+            <h2>O Que Você Vai Encontrar</h2>
+            
+            <div class="preview-grid">
+                <div class="preview-card">
+                    <h3>📍 Mapeamento Profundo</h3>
+                    <p>Identifique suas 7 principais cicatrizes e descubra a "Raiz" que conectam todas elas.</p>
+                </div>
+                <div class="preview-card">
+                    <h3>🧠 Quebra de Padrões</h3>
+                    <p>A ferramenta vai te ajudar a substituir suas "Autoestradas Mentais" (mentiras) por novos caminhos neurais.</p>
+                </div>
+                <div class="preview-card">
+                    <h3>🏆 Plano de Ação</h3>
+                    <p>Ao final, você gera um PDF oficial com seu contrato de compromisso e seu novo pódio de vida.</p>
+                </div>
+            </div>
+
+            <div class="testimonial">
+                <p>"Eu achava que seria só mais um texto, mas a interatividade me fez mergulhar de verdade. Gerar o PDF no final foi como assinar minha carta de alforria."</p>
+                <div class="testimonial-author">— Aluno do Método VAP</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about-author">
+        <div class="about-content">
+            <h2>Quem Guiará Você</h2>
+            <p><strong>Cléverson E. Costa</strong> sobreviveu à fome, falência e luto. Hoje, usa suas cicatrizes como mapa.</p>
+            <div class="credentials">
+                <div class="credential-badge">Treinador Comportamental</div>
+                <div class="credential-badge">Autor Best-Seller</div>
+                <div class="credential-badge">Especialista em PNL</div>
+            </div>
+        </div>
+    </section>
+
+    <section class="final-cta">
+        <h2>Sua Nova História Começa Aqui</h2>
+        <p>Não custa nada, mas pode valer uma vida inteira de liberdade.</p>
+        <a class="cta-button" onclick="document.getElementById('formulario-topo').scrollIntoView({behavior: 'smooth'});">
+            Acessar Ferramenta Agora
+        </a>
+    </section>
+
+    <footer>
+        <p>© 2025 Cléverson E. Costa • Todos os direitos reservados</p>
+        <p>Instagram: <a href="https://instagram.com/cleversoncostaoficial">@cleverson.costaoficial</a></p>
+    </footer>
+
+</body>
+</html>
